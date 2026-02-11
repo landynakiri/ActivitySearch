@@ -109,22 +109,22 @@ function App() {
       const mockData: MockResult[] = [
         {
           id: '1',
-          title: 'Fluent UI Workshop',
-          snippet: '深度探索 Microsoft Fluent UI v9 的實作細節。學習如何建構具備系統感的專業介面。',
+          title: `${searchTerm} 活動詳情 - KKTIX`,
+          snippet: `這是一則關於「${searchTerm}」的模擬活動資訊。點擊下方按鈕前往 KKTIX 查看更多關於日期、地點與購票的詳細內容。`,
           link: 'https://kktix.com/',
-          date: 'Oct 26'
+          date: startDate || 'Oct 26'
         },
         {
           id: '2',
-          title: 'Taipei Tech Summit',
-          snippet: '年度最大技術盛會。匯集國內外頂尖專家談論雲端、AI 與前端開發趨勢。',
+          title: `2026 ${searchTerm} 年度盛會 - Accupass`,
+          snippet: `發現更多精彩的「${searchTerm}」相關體驗。Accupass 為您精選最優質的活動內容，助您規劃行程。`,
           link: 'https://www.accupass.com/',
-          date: 'Nov 12'
+          date: endDate || 'Nov 12'
         },
         {
           id: '3',
-          title: 'Hiking with Experts',
-          snippet: '在專家領路下探索台北郊山。享受大自然的同時也能交流戶外技能與心法。',
+          title: `${searchTerm} 線上分享會`,
+          snippet: `透過線上參與，「${searchTerm}」愛好者齊聚一堂。不論您身在何處都能獲取最新資訊。`,
           link: 'https://www.facebook.com/events',
           date: 'Dec 05'
         }
