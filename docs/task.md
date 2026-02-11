@@ -1,0 +1,22 @@
+# 活動查詢工具開發任務 (Activity Search Tool Development Task)
+
+- [ ] 需求分析與規格完善 [x]
+    - [x] 建立初步任務清單
+    - [x] 提問並蒐集詳細需求
+    - [x] 確定技術棧與平台 (React + C#, Vercel)
+- [ ] 系統設計與開發計畫 [x]
+    - [x] 撰寫詳細實作計畫 (Implementation Plan)
+    - [x] 整合 DDD 與 TDD 方法論
+    - [ ] 視覺設計方案 (UI Mockup)
+- [ ] 專案初始化與測試環境 (TDD Foundation) [/]
+    - [ ] 初始化 Vite + React + Tailwind
+    - [ ] 配置 Vitest 與 React Testing Library
+- [ ] 核心功能開發 (Domain-Driven TDD)
+    - [ ] 建立第一個 User Story
+    - [ ] 實作活動領域模型 (Activity Entity, ActivityDate)
+    - [ ] 實作搜尋解析服務 (ActivitySearchService)
+- [ ] UI 與視覺設計 (Glassmorphism)
+    - [ ] 實作核心搜尋介面
+    - [ ] 實作活動清單與詳細卡片
+- [ ] 測試與驗證 [ ]
+- [ ] 交付與部署 [ ]
