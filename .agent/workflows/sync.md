@@ -1,30 +1,30 @@
 ---
-description: Automatically commit and push changes with generated commit messages
+description: 自動根據變動生成 commit 訊息並推送至遠端倉庫。
 ---
 
-# Git Sync Workflow
+# Git 同步流程 (Git Sync Workflow)
 
-Use this workflow to quickly commit all changes and push them to the remote repository.
+使用此流程快速提交所有變更並推送到遠端倉庫。
 
-## Steps
+## 步驟 (Steps)
 
-1. **Stage Changes**
-   - Stage all relevant files:
+1. **暫存變更 (Stage Changes)**
+   - 暫存所有相關檔案：
    ```bash
    git add .
    ```
 
-2. **Generate Commit Message**
-   - Analyze the staged changes using `git diff --cached`.
-   - Create a concise commit message that summarizes the changes.
+2. **生成 Commit 訊息 (Generate Commit Message)**
+   - 使用 `git diff --cached` 分析已暫存的變更。
+   - 建立一個簡潔的 commit 訊息來摘要這些變動。
 
 // turbo
-3. **Commit and Push**
-   - Execute the commit and push:
+3. **提交並推送 (Commit and Push)**
+   - 執行提交與推送：
    ```bash
-   git commit -m "[Generated Message]"
+   git commit -m "[產生的訊息]"
    git push origin main
    ```
 
 > [!NOTE]
-> If a 403 error occurs, ensure you are authenticated in the browser and the remote URL is correct.
+> 如果發生 403 錯誤，請確保您已在瀏覽器中完成身份驗證，且遠端 URL 正確。
