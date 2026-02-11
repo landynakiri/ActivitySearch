@@ -1,34 +1,58 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Calendar, ExternalLink, MapPin } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 export interface ActivityCardProps {
     title: string;
     snippet: string;
     link: string;
     formattedDate?: string;
+    className?: string;
 }
 
-export const ActivityCard: React.FC<ActivityCardProps> = ({ title, snippet, link, formattedDate }) => {
+export const ActivityCard: React.FC<ActivityCardProps> = ({ title, snippet, link, formattedDate, className }) => {
     return (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group cursor-pointer" onClick={() => window.open(link, '_blank')}>
-            <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors line-clamp-2">
-                    {title}
-                </h3>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -4 }}
+            className={cn(
+                "group relative flex flex-col justify-between overflow-hidden rounded-xl border bg-card p-6 text-card-foreground shadow-sm transition-all hover:shadow-md hover:border-primary/20",
+                className
+            )}
+            onClick={() => window.open(link, '_blank')}
+        >
+            <div className="space-y-4">
+                <div className="flex items-start justify-between gap-4">
+                    <h3 className="line-clamp-2 text-xl font-bold tracking-tight transition-colors group-hover:text-primary">
+                        {title}
+                    </h3>
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-all group-hover:bg-primary group-hover:text-primary-foreground">
+                        <ExternalLink className="h-4 w-4" />
+                    </div>
+                </div>
+
+                <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                    {snippet}
+                </p>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground">
                 {formattedDate && (
-                    <span className="text-xs font-mono bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-md whitespace-nowrap ml-2">
-                        {formattedDate}
-                    </span>
+                    <div className="flex items-center gap-1.5 rounded-full bg-secondary/50 px-2.5 py-1">
+                        <Calendar className="h-3 w-3" />
+                        <span>{formattedDate}</span>
+                    </div>
                 )}
+                <div className="flex items-center gap-1.5 rounded-full bg-secondary/50 px-2.5 py-1">
+                    <MapPin className="h-3 w-3" />
+                    <span>Taipei, Taiwan</span>
+                </div>
             </div>
-            <p className="text-white/60 text-sm line-clamp-3 mb-4">
-                {snippet}
-            </p>
-            <div className="flex items-center text-xs text-indigo-400 font-medium">
-                <span>瞭解更多</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </div>
-        </div>
+
+            {/* Decorative gradient overlay on hover */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        </motion.div>
     );
 };
