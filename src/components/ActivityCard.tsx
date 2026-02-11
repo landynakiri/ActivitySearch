@@ -1,45 +1,94 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '../lib/utils';
+import {
+    Card,
+    CardHeader,
+    CardFooter,
+    Button,
+    Caption1,
+    Body1Strong,
+    makeStyles,
+    shorthands,
+    tokens
+} from '@fluentui/react-components';
+import { CalendarRegular, OpenRegular, LocationRegular } from '@fluentui/react-icons';
+
+const useStyles = makeStyles({
+    card: {
+        ...shorthands.margin('auto'),
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: tokens.colorNeutralBackground3,
+        ':hover': {
+            backgroundColor: tokens.colorNeutralBackground3Hover,
+        },
+    },
+    caption: {
+        color: tokens.colorNeutralForeground3,
+    },
+    footer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: '12px',
+    },
+    tags: {
+        display: 'flex',
+        gap: '8px',
+    }
+});
 
 export interface ActivityCardProps {
     title: string;
     snippet: string;
     link: string;
     formattedDate?: string;
-    className?: string;
 }
 
-export const ActivityCard: React.FC<ActivityCardProps> = ({ title, snippet, link, formattedDate, className }) => {
+export const ActivityCard: React.FC<ActivityCardProps> = ({ title, snippet, link, formattedDate }) => {
+    const styles = useStyles();
+
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className={cn(
-                "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-white/[0.03] p-8 text-card-foreground transition-all hover:bg-white/[0.05] hover:border-white/10 shadow-lg",
-                className
-            )}
-            onClick={() => window.open(link, '_blank')}
-        >
-            <div className="space-y-4">
-                <div className="flex items-start justify-between gap-4">
-                    <h3 className="line-clamp-2 text-2xl font-bold tracking-tight text-white group-hover:text-primary transition-colors">
+        <Card className={styles.card} onClick={() => window.open(link, '_blank')}>
+            <CardHeader
+                header={
+                    <Body1Strong>
                         {title}
-                    </h3>
+                    </Body1Strong>
+                }
+                description={
+                    <Caption1 className={styles.caption}>
+                        {snippet}
+                    </Caption1>
+                }
+            />
+
+            <CardFooter className={styles.footer}>
+                <div className={styles.tags}>
                     {formattedDate && (
-                        <div className="flex shrink-0 items-center justify-center rounded-lg bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/70">
+                        <Button
+                            size="small"
+                            appearance="subtle"
+                            icon={<CalendarRegular />}
+                        >
                             {formattedDate}
-                        </div>
+                        </Button>
                     )}
+                    <Button
+                        size="small"
+                        appearance="subtle"
+                        icon={<LocationRegular />}
+                    >
+                        Taipei
+                    </Button>
                 </div>
-
-                <p className="line-clamp-3 text-base leading-relaxed text-white/40">
-                    {snippet}
-                </p>
-            </div>
-
-            {/* Visual bottom spacing as per mockup */}
-            <div className="mt-4" />
-        </motion.div>
+                <Button
+                    appearance="primary"
+                    icon={<OpenRegular />}
+                    iconPosition="after"
+                >
+                    查看詳情
+                </Button>
+            </CardFooter>
+        </Card>
     );
 };

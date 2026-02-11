@@ -1,7 +1,85 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Search, Calendar, Settings, Home, LayoutGrid, Sparkles } from 'lucide-react'
+import {
+  makeStyles,
+  shorthands,
+  tokens,
+  Title2,
+  Subtitle1,
+  Input,
+  Button,
+  Field,
+  Spinner,
+  Divider,
+  Tab,
+  TabList,
+  Text
+} from '@fluentui/react-components'
+import {
+  SearchRegular,
+  CalendarDateRegular,
+  SettingsRegular,
+  HomeRegular,
+  AppsRegular,
+  SparkleRegular
+} from '@fluentui/react-icons'
 import { ActivityCard } from './components/ActivityCard'
+
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    height: '100vh',
+    backgroundColor: tokens.colorNeutralBackground1,
+    color: tokens.colorNeutralForeground1,
+  },
+  sidebar: {
+    width: '72px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    ...shorthands.padding('24px', '0'),
+    borderRight: `1px solid ${tokens.colorNeutralStroke1}`,
+  },
+  navItem: {
+    marginBottom: '24px',
+  },
+  main: {
+    flex: 1,
+    ...shorthands.padding('40px', '48px'),
+    overflowY: 'auto',
+  },
+  header: {
+    marginBottom: '40px',
+  },
+  searchSection: {
+    maxWidth: '800px',
+    marginBottom: '48px',
+  },
+  searchForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    ...shorthands.padding('24px'),
+    backgroundColor: tokens.colorNeutralBackground2,
+    ...shorthands.borderRadius(tokens.borderRadiusXLarge),
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+  },
+  inputRow: {
+    display: 'flex',
+    gap: '16px',
+  },
+  resultsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+    gap: '24px',
+  },
+  emptyState: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    ...shorthands.padding('80px', '0'),
+    color: tokens.colorNeutralForeground4,
+  }
+});
 
 interface MockResult {
   id: string;
@@ -12,6 +90,7 @@ interface MockResult {
 }
 
 function App() {
+  const styles = useStyles();
   const [searchTerm, setSearchTerm] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -26,137 +105,118 @@ function App() {
     setIsSearching(true)
     setHasSearched(true)
 
-    // Simulate API delay
     setTimeout(() => {
       const mockData: MockResult[] = [
         {
           id: '1',
-          title: 'Hiking Expedition',
-          snippet: 'Explore scenic trails with guided support. Discover nature like never before in this premium expedition.',
+          title: 'Fluent UI Workshop',
+          snippet: '深度探索 Microsoft Fluent UI v9 的實作細節。學習如何建構具備系統感的專業介面。',
           link: 'https://kktix.com/',
           date: 'Oct 26'
         },
         {
           id: '2',
-          title: 'Hiking Climbing',
-          snippet: 'Explore scenic trails and mountain climbing. Experience the thrill of the heights with our expert guides.',
+          title: 'Taipei Tech Summit',
+          snippet: '年度最大技術盛會。匯集國內外頂尖專家談論雲端、AI 與前端開發趨勢。',
           link: 'https://www.accupass.com/',
-          date: 'Oct 26'
+          date: 'Nov 12'
         },
         {
           id: '3',
-          title: 'Rural Expedition',
-          snippet: 'Explore your local trails with outdoor snacks and hiking developed activities for families.',
+          title: 'Hiking with Experts',
+          snippet: '在專家領路下探索台北郊山。享受大自然的同時也能交流戶外技能與心法。',
           link: 'https://www.facebook.com/events',
-          date: 'Oct 26'
-        },
-        {
-          id: '4',
-          title: 'Hiking Expedition',
-          snippet: 'Short of inspiration and beautiful challenges? Join us for an unforgettable trekking expression.',
-          link: 'https://kktix.com/',
-          date: 'Oct 26'
+          date: 'Dec 05'
         }
       ]
       setResults(mockData)
       setIsSearching(false)
-    }, 1000)
+    }, 1200)
   }
 
   return (
-    <div className="flex h-screen bg-[#0E1117] text-white font-sans antialiased overflow-hidden">
-      {/* Slim Sidebar - Matches Mockup Exactly */}
-      <aside className="flex flex-col items-center w-20 py-8 border-r border-white/5 bg-[#0E1117]">
-        <div className="mb-12">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-            <Sparkles className="h-6 w-6 text-white/80" />
-          </div>
+    <div className={styles.container}>
+      {/* Sidebar - Fluent System Style */}
+      <aside className={styles.sidebar}>
+        <div className={styles.navItem}>
+          <Button appearance="subtle" icon={<SparkleRegular fontSize={24} />} />
         </div>
-
-        <nav className="flex flex-col gap-8">
-          <button className="text-white/40 hover:text-white transition-colors">
-            <Home className="h-6 w-6" />
-          </button>
-          <button className="text-primary h-6 w-6">
-            <Search className="h-6 w-6" />
-          </button>
-          <button className="text-white/40 hover:text-white transition-colors">
-            <LayoutGrid className="h-6 w-6" />
-          </button>
+        <Divider appearance="subtle" style={{ width: '40%', marginBottom: '24px' }} />
+        <nav className="flex flex-col">
+          <TabList vertical appearance="subtle" selectedValue="search">
+            <Tab value="home" icon={<HomeRegular fontSize={20} />} />
+            <Tab value="search" icon={<SearchRegular fontSize={20} />} />
+            <Tab value="apps" icon={<AppsRegular fontSize={20} />} />
+          </TabList>
         </nav>
-
-        <div className="mt-auto">
-          <button className="text-white/40 hover:text-white transition-colors">
-            <Settings className="h-6 w-6" />
-          </button>
+        <div style={{ marginTop: 'auto' }}>
+          <Button appearance="subtle" icon={<SettingsRegular fontSize={20} />} />
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 px-12 py-10 overflow-y-auto">
-        <header className="mb-10">
-          <h1 className="text-2xl font-semibold tracking-tight">Activity Search Tool</h1>
+      <main className={styles.main}>
+        <header className={styles.header}>
+          <Title2>Activity Search Tool</Title2>
+          <Subtitle1 block style={{ color: tokens.colorNeutralForeground3 }}>
+            基於 Microsoft Fluent UI 的專業活動查詢系統
+          </Subtitle1>
         </header>
 
-        {/* Search Formulation Area */}
-        <section className="max-w-4xl space-y-4 mb-14">
-          <form onSubmit={handleSearch} className="space-y-4">
-            {/* Search Input Box */}
-            <div className="relative group">
-              <input
-                type="text"
+        <section className={styles.searchSection}>
+          <form onSubmit={handleSearch} className={styles.searchForm}>
+            <Field label="搜尋關鍵字">
+              <Input
+                contentAfter={<SearchRegular />}
+                placeholder="搜尋路跑、講座、工作坊..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search activities..."
-                className="w-full h-16 bg-white/[0.03] border border-white/5 rounded-2xl px-6 text-lg focus:outline-none focus:border-white/20 focus:bg-white/[0.05] transition-all placeholder-white/20"
+                size="large"
               />
-              <Search className="absolute right-6 top-1/2 -translate-y-1/2 h-6 w-6 text-white/20 group-focus-within:text-white/40 transition-colors" />
-            </div>
+            </Field>
 
-            {/* Dates Area */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative h-14 bg-white/[0.03] border border-white/5 rounded-2xl flex items-center px-5 group hover:border-white/10 transition-all">
-                <span className="text-white/20 text-sm flex-1">Start Date</span>
-                <input
+            <div className={styles.inputRow}>
+              <Field label="從日期" style={{ flex: 1 }}>
+                <Input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  contentAfter={<CalendarDateRegular />}
                 />
-                <Calendar className="h-5 w-5 text-white/20 group-hover:text-white/40" />
-                {startDate && <span className="absolute left-5 text-sm text-white/70">{startDate}</span>}
-              </div>
-              <div className="relative h-14 bg-white/[0.03] border border-white/5 rounded-2xl flex items-center px-5 group hover:border-white/10 transition-all">
-                <span className="text-white/20 text-sm flex-1">End Date</span>
-                <input
+              </Field>
+              <Field label="至日期" style={{ flex: 1 }}>
+                <Input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  contentAfter={<CalendarDateRegular />}
                 />
-                <Calendar className="h-5 w-5 text-white/20 group-hover:text-white/40" />
-                {endDate && <span className="absolute left-5 text-sm text-white/70">{endDate}</span>}
-              </div>
+              </Field>
             </div>
 
-            <button type="submit" className="hidden">Submit</button>
+            <Button
+              appearance="primary"
+              size="large"
+              disabled={isSearching}
+              onClick={handleSearch}
+            >
+              {isSearching ? '搜尋中...' : '開始搜尋'}
+            </Button>
           </form>
         </section>
 
-        {/* Results Grid Area */}
         <section>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <Subtitle1>搜尋結果</Subtitle1>
+            {results.length > 0 && <Text size={200}>找到 {results.length} 個結果</Text>}
+          </div>
+
           {isSearching ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="h-64 animate-pulse rounded-2xl bg-white/[0.02] border border-white/5" />
-              ))}
+            <div className={styles.emptyState}>
+              <Spinner label="正在檢索 Google 索引數據..." />
             </div>
           ) : results.length > 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            >
+            <div className={styles.resultsGrid}>
               {results.map(res => (
                 <ActivityCard
                   key={res.id}
@@ -166,14 +226,14 @@ function App() {
                   formattedDate={res.date}
                 />
               ))}
-            </motion.div>
+            </div>
           ) : (
-            hasSearched ? (
-              <div className="flex flex-col items-center justify-center py-20 text-white/20 border border-dashed border-white/5 rounded-3xl">
-                <Search className="h-10 w-10 mb-4 opacity-5" />
-                <p>No activities found</p>
+            hasSearched && (
+              <div className={styles.emptyState}>
+                <SearchRegular fontSize={48} style={{ opacity: 0.1, marginBottom: '16px' }} />
+                <Text>未找到符合條件的活動</Text>
               </div>
-            ) : null
+            )
           )}
         </section>
       </main>
