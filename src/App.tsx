@@ -22,6 +22,8 @@ import {
   AppsRegular,
   SparkleRegular
 } from '@fluentui/react-icons'
+import { GoogleQueryBuilder } from './domain/services/GoogleQueryBuilder'
+import { OpenDataService } from './domain/services/OpenDataService'
 import { ActivityCard } from './components/ActivityCard'
 
 const useStyles = makeStyles({
@@ -98,40 +100,42 @@ function App() {
   const [isSearching, setIsSearching] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!searchTerm.trim()) return
 
     setIsSearching(true)
     setHasSearched(true)
 
-    setTimeout(() => {
-      const mockData: MockResult[] = [
-        {
-          id: '1',
-          title: `${searchTerm} 活動詳情 - KKTIX`,
-          snippet: `這是一則關於「${searchTerm}」的模擬活動資訊。點擊下方按鈕前往 KKTIX 查看更多關於日期、地點與購票的詳細內容。`,
-          link: 'https://kktix.com/',
-          date: startDate || 'Oct 26'
-        },
-        {
-          id: '2',
-          title: `2026 ${searchTerm} 年度盛會 - Accupass`,
-          snippet: `發現更多精彩的「${searchTerm}」相關體驗。Accupass 為您精選最優質的活動內容，助您規劃行程。`,
-          link: 'https://www.accupass.com/',
-          date: endDate || 'Nov 12'
-        },
-        {
-          id: '3',
-          title: `${searchTerm} 線上分享會`,
-          snippet: `透過線上參與，「${searchTerm}」愛好者齊聚一堂。不論您身在何處都能獲取最新資訊。`,
-          link: 'https://www.facebook.com/events',
-          date: 'Dec 05'
-        }
-      ]
-      setResults(mockData)
-      setIsSearching(false)
-    }, 1200)
+    // 1. 抓取開放資料 (零成本)
+    const openData = await OpenDataService.search(searchTerm);
+
+    // 2. 轉換格式以符合 UI
+    const formattedResults: MockResult[] = openData.map(item => ({
+      id: item.id,
+      title: item.title,
+      snippet: item.description,
+      link: item.sourceUrl,
+      date: item.startDate.split(' ')[0] // 簡化日期
+    }));
+
+    // 3. 整合智慧搜尋連結 (Google 外部連結，零成本)
+    const googleQuery = GoogleQueryBuilder.build({
+      keyword: searchTerm,
+      startDate: startDate ? new Date(startDate) : undefined,
+      endDate: endDate ? new Date(endDate) : undefined
+    });
+
+    const smartSearchResult: MockResult = {
+      id: 'google-smart-search',
+      title: `🔍 在 Google 搜尋更多「${searchTerm}」結果`,
+      snippet: `點擊此處將使用最佳化的智慧語法為您在 Google 上搜尋全網活動，包含 FB、KKTIX、Accupass 等。`,
+      link: `https://www.google.com/search?q=${encodeURIComponent(googleQuery)}`,
+      date: '全網搜尋'
+    };
+
+    setResults([smartSearchResult, ...formattedResults]);
+    setIsSearching(false)
   }
 
   return (
