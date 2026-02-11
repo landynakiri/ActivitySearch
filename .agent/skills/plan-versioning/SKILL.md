@@ -32,5 +32,5 @@ description: 使用 Git 與實體歷史目錄進行實作計畫版本控制的�
 
 執行自動同步時，請遵循以下規則：
 1.  **分析差異 (Analyze Diffs)**：使用 `git diff --cached` 查看即將提交的內容。
-2.  **生成訊息 (Generate Message)**：以簡潔的約定式提交 (Conventional Commit) 格式摘要變更（例如：`feat:`, `fix:`, `docs:`）。
+2.  **生成訊息 (Generate Message)**：**使用中文**摘要目前的變更，並遵循約定式提交 (Conventional Commit) 格式（例如：`feat: 增加搜尋功能`, `docs: 更新計畫書`）。
 3.  **推送 (Push)**：確保將變更推送到遠端倉庫。

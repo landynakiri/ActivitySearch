@@ -16,7 +16,7 @@ description: 自動根據變動生成 commit 訊息並推送至遠端倉庫。
 
 2. **生成 Commit 訊息 (Generate Commit Message)**
    - 使用 `git diff --cached` 分析已暫存的變更。
-   - 建立一個簡潔的 commit 訊息來摘要這些變動。
+   - 建立一個簡潔的 **中文** commit 訊息來摘要這些變動（例如：`docs: 轉換為中文說明`）。
 
 // turbo
 3. **提交並推送 (Commit and Push)**
